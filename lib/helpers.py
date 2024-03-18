@@ -68,28 +68,70 @@ def delete_department():
 # You'll implement the employee functions in the lab
 
 def list_employees():
-    pass
+    employees=Employee.get_all()
+    for employee in employees:
+        print(employee)
 
 
 def find_employee_by_name():
-    pass
+    employee_name= input("Find Name:")
+    name=Employee.find_by_name(employee_name)
+    print(name) if name else print (f'No {name} in our database')
+    
 
 
 def find_employee_by_id():
-    pass
+    employee_id= input("Find ID:")
+    id=Employee.find_by_id(employee_id)
+    print(id) if id else print (f'No {id} in our database')
 
 
 def create_employee():
-    pass
+    name=input('Employee Name is:')
+    job_title=input('Job Title is:')
+    department=input('Department is:')
+    try:
+        employee= Department.create(name, job_title, department)
+        print(f'Success: {employee}')
+    except Exception as exc:
+        print("Error creating department: ", exc)
+    
 
 
 def update_employee():
-    pass
+    id_=input('Employee id')
+    if employee := Employee.find_by_id(id_):
+        try:
+            name = input("Enter the employees's new name: ")
+            employee.name = name
+            job_title = input("Enter the employees's jon: ")
+            employee.job_title= job_title
+            department=input("Enter the new department:")
+            employee.department=department
+
+            employee.update()
+            print(f'Success: {employee}')
+        except Exception as exc:
+            print("Error updating department: ", exc)
+    else:
+        print(f'Department {id_} not found')
+
 
 
 def delete_employee():
-    pass
+    id_ = input("Enter the employee's id: ")
+    if employee := Employee.find_by_id(id_):
+        employee.delete()
+        print(f'Employee {id_} deleted')
+    else:
+        print(f'Employee {id_} not found')
 
 
 def list_department_employees():
-    pass
+    department=input('Department Id:')
+    employees= Employee.find_by_id(department)
+    if employees:
+        department_employees=Employee.department_id(employees, department)
+        if department_employees:
+            for employee in department_employees:
+                print(employee)
